@@ -59,3 +59,6 @@ jobs:
         run: |
           echo "Contenido descargado:"
           find dist/angular-devops-lab -maxdepth 2 -type f
+
+      - name: Build Docker image
+        run: docker build -t angular-devops-lab:1.0 .
