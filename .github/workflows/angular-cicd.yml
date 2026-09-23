@@ -62,3 +62,6 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t angular-devops-lab:1.0 .
+
+      - name: Deploy with Docker Compose
+        run: docker compose up -d
