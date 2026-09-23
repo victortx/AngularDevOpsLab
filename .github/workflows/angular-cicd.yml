@@ -42,3 +42,20 @@ jobs:
         with:
           name: angular-build
           path: dist/angular-devops-lab
+
+  deploy-development:
+    name: Deploy Development
+    runs-on: [self-hosted, devops-lab]
+    needs: build
+
+    steps:
+      - name: Download Angular build
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-build
+          path: dist/angular-devops-lab
+
+      - name: Verify downloaded artifact
+        run: |
+          echo "Contenido descargado:"
+          find dist/angular-devops-lab -maxdepth 2 -type f
