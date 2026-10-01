@@ -5,6 +5,10 @@ on:
     types:
       - completed
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   deploy-qa:
     name: Deploy QA
@@ -21,6 +25,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: angular-build-${{ github.event.workflow_run.head_sha }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
           path: dist/angular-devops-lab
 
