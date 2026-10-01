@@ -25,7 +25,9 @@ jobs:
           path: dist/angular-devops-lab
 
       - name: Verify downloaded artifact
-        run: | echo "Contenido descargado:" find dist/angular-devops-lab -maxdepth 2 -type f
+        run: |
+          echo "Contenido descargado:"
+          find dist/angular-devops-lab -maxdepth 2 -type f
 
       - name: Build Docker image
         run: docker build -t angular-devops-lab:1.0 .
@@ -34,4 +36,4 @@ jobs:
         run: docker compose up -d
 
       - name: Health check
-        run: curl -f http://localhost 
+        run: curl -f http://localhost
