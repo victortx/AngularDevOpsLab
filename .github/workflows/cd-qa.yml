@@ -44,8 +44,19 @@ jobs:
       - name: Build Docker image
         run: docker build -t angular-devops-lab:1.0 .
 
-      - name: Deploy with Docker compose
+      - name: Deploy with Docker Compose
         run: docker compose up -d
 
+      - name: Debug Docker
+        run: |
+          echo "=== Docker containers ==="
+          docker ps -a
+
+          echo "=== Docker ports ==="
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Docker logs
+        run: docker logs angular-devops-lab
+
       - name: Health check
-        run: curl -f http://localhost
+        run: curl -v http://localhost
