@@ -59,4 +59,4 @@ jobs:
         run: docker logs angular-devops-lab
 
       - name: Health check
-        run: curl -v http://localhost
+        run: curl -f http://127.0.0.1:80
