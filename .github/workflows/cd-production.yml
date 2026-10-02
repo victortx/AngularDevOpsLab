@@ -1,0 +1,46 @@
+name: CD Production
+
+on:
+  workflow_run:
+    workflows: ["CD QA Angular"]
+    types:
+      - completed
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  deploy-production:
+    name: Deploy Production
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: [self-hosted, devops-lab]
+    environment: production
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Download approved Angular build
+        uses: actions/download-artifact@v4
+        with:
+          name: angular-build-approved-${{ github.event.workflow_run.head_sha }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: dist/angular-devops-lab
+
+      - name: Verify downloaded artifact
+        run: |
+          echo "Contenido descargado para producción:"
+          find dist/angular-devops-lab -maxdepth 2 -type f
+
+      - name: Build Docker image
+        run: docker build -t angular-devops-lab:1.0 .
+
+      - name: Deploy with Docker Compose
+        run: docker compose up -d
+
+      - name: Health check
+        run: curl -f http://localhost
