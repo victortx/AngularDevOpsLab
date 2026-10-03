@@ -64,5 +64,16 @@ jobs:
       - name: Deploy with Docker Compose
         run: docker compose up -d
 
+      - name: Debug Docker
+        run: |
+          echo "=== Docker containers ==="
+          docker ps -a
+
+          echo "=== Docker ports ==="
+          docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
+
+      - name: Docker logs
+        run: docker logs angular-devops-lab
+
       - name: Health check
         run: curl -f http://127.0.0.1:80
