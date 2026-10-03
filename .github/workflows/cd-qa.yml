@@ -34,20 +34,19 @@ jobs:
           echo "Contenido descargado:"
           find dist/angular-devops-lab -maxdepth 2 -type f
 
-      - name: Create deployment metadata
-        run: |
-          echo "COMMIT_SHA=${{ github.event.workflow_run.head_sha }}" > deployment-info.txt
-          echo "CI_RUN_ID=${{ github.event.workflow_run.id }}" >> deployment-info.txt
-          echo "QA_RUN_ID=${{ github.run_id }}" >> deployment-info.txt
-          echo "ARTIFACT_NAME=angular-build-approved-${{ github.event.workflow_run.head_sha }}" >> deployment-info.txt
+#      - name: Create deployment metadata
+#        run: |
+#          echo "COMMIT_SHA=${{ github.event.workflow_run.head_sha }}" > deployment-info.txt
+#          echo "CI_RUN_ID=${{ github.event.workflow_run.id }}" >> deployment-info.txt
+#          echo "QA_RUN_ID=${{ github.run_id }}" >> deployment-info.txt
+#          echo "ARTIFACT_NAME=angular-build-approved-${{ github.event.workflow_run.head_sha }}" >> deployment-info.txt
 
       - name: Upload approved Angular build
         uses: actions/upload-artifact@v4
         with:
           name: angular-build-approved-${{ github.event.workflow_run.head_sha }}
-          path: |
-                dist/angular-devops-lab
-                deployment-info.txt
+          path: dist/angular-devops-lab
+ #               deployment-info.txt
           retention-days: 7
 
       - name: Build Docker image
