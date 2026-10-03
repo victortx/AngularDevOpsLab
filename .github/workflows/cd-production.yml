@@ -23,10 +23,30 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: Find approved artifact
+        id: find-artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          REPO: ${{ github.repository }}
+        run: |
+          ARTIFACT_NAME=$(gh api \
+            repos/$REPO/actions/runs/$RUN_ID/artifacts \
+            --jq '.artifacts[] | select(.name | startswith("angular-build-approved-")) | .name' \
+            | head -n 1)
+
+          if [ -z "$ARTIFACT_NAME" ]; then
+            echo "No se encontró el artifact aprobado."
+            exit 1
+          fi
+
+          echo "Artifact encontrado: $ARTIFACT_NAME"
+          echo "artifact_name=$ARTIFACT_NAME" >> "$GITHUB_OUTPUT"
+
       - name: Download approved Angular build
         uses: actions/download-artifact@v4
         with:
-          name: angular-build-approved-${{ github.event.workflow_run.head_sha }}
+          name: ${{ steps.find-artifact.outputs.artifact_name }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
           path: dist/angular-devops-lab
@@ -35,6 +55,9 @@ jobs:
         run: |
           echo "Contenido descargado para producción:"
           find dist/angular-devops-lab -maxdepth 2 -type f
+
+          echo "Metadata de deployment:"
+          cat dist/angular-devops-lab/deployment-info.txt || true
 
       - name: Build Docker image
         run: docker build -t angular-devops-lab:1.0 .
