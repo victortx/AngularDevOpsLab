@@ -43,4 +43,4 @@ jobs:
         run: docker compose up -d
 
       - name: Health check
-        run: curl -f http://localhost
+        run: curl -f http://127.0.0.1:80
