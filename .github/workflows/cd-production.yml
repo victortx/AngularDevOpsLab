@@ -23,6 +23,9 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
+      - name: Show environment test
+        run: echo "Deploying to {{ vars.APP_ENV  }}"
+
       - name: Find approved artifact
         id: find-artifact
         env:
