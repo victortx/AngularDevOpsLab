@@ -23,7 +23,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Show Environment test
-        run: echo "Deploying to {{ vars.APP_ENV }}"
+        run: echo "Deploying to ${{ vars.APP_ENV }}"
 
       - name: Download Angular build
         uses: actions/download-artifact@v4
