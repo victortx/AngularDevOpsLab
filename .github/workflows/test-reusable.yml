@@ -11,7 +11,7 @@ jobs:
       test-command: 'npm test -- --watch=false'
 
   show-result:
-    need: call-reusable
+    needs: call-reusable
     runs-on: [self-hosted, devops-lab]
 
     step:
