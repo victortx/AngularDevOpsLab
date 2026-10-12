@@ -10,11 +10,15 @@ on:
         required: true
         type: string
 
+    outputs:
+      test-result:
+        description: "Resultado de las pruebas"
+        value: ${{ jobs.setup.outputs.test-result }}
+
 jobs:
   setup:
     outputs:
-      test-result: "Resultado de las pruebas"
-      value: ${{ steps.tests.outputs.test-result }}
+      test-result: ${{ steps.tests.outputs.test-result }}
 
     runs-on: [self-hosted, devops-lab]
 
