@@ -14,6 +14,6 @@ jobs:
     needs: call-reusable
     runs-on: [self-hosted, devops-lab]
 
-    step:
+    steps:
       - name: Show test result
         run: echo "Resultado de las pruebas ${{ needs.call-reusable.outputs.test-result}}"
