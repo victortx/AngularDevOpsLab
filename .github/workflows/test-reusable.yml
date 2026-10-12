@@ -9,3 +9,11 @@ jobs:
     with:
       node-version: '22'
       test-command: 'npm test -- --watch=false'
+
+  show-result:
+    need: call-reusable
+    runs-on: [self-hosted, devops-lab]
+
+    step:
+      - name: Show test result
+        run: echo "Resultado de las pruebas ${{ needs.call-reusable.outputs.test-result}}"

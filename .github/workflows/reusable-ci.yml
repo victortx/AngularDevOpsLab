@@ -12,6 +12,10 @@ on:
 
 jobs:
   setup:
+    outputs:
+      test-result: "Resultado de las pruebas"
+      value: ${{ steps.tests.outputs.test-result }}
+
     runs-on: [self-hosted, devops-lab]
 
     steps:
@@ -31,5 +35,8 @@ jobs:
         run: npm ci
 
       - name: Run Tests
-        run: ${{ inputs.test-command }}
+        id: tests
+        run: |
+          ${{ inputs.test-command }}
+          echo "test-result=passed" >> "$GITHUB_OUTPUT"
 
