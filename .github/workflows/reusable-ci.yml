@@ -6,6 +6,9 @@ on:
       node-version:
         required: true
         type: string
+      test-command:
+        required: true
+        type: string
 
 jobs:
   setup:
@@ -23,3 +26,10 @@ jobs:
 
       - name: Show Node Version
         run: node --version
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Tests
+        run: ${{ inputs.test-command }}
+

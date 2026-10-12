@@ -8,3 +8,4 @@ jobs:
     uses: ./.github/workflows/reusable-ci.yml
     with:
       node-version: '22'
+      test-command: 'npm test -- --watch=false'
